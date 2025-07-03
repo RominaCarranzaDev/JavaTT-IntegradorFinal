@@ -14,7 +14,6 @@ public class ProductService {
     }
 
     public List<Product> listProducts() {
-//    return this.repository.listarProductos();
         return this.repositoryJpa.findAll();
     }
 
@@ -26,6 +25,8 @@ public class ProductService {
 
         ProductDTO responseDTO = new ProductDTO();
         responseDTO.setMessage("Producto creado exitosamente");
+        responseDTO.setId(savedProduct.getId());
+        responseDTO.setName(savedProduct.getName());
 
         return responseDTO;
     }
