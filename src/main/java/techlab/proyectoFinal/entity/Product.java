@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.Normalizer;
+
 @Setter
 @Getter
 @Entity
@@ -39,4 +41,14 @@ public class Product {
                 ================================
                 """, this.id, this.name, this.price, this.stock, this.description);
     }
+
+    public String normalizerName() {
+        if (this.name == null) {
+            return "";
+        }
+        // Normalizer me permitió simplificar la búsqueda y reemplazo de letras con acentos
+        String normalized = Normalizer.normalize(name, Normalizer.Form.NFD);
+        return normalized.replaceAll("\\p{M}", "").toLowerCase();
+    }
+
 }
