@@ -87,9 +87,9 @@ public class ProductRepository {
     }
 
     private void agregarProductosIniciales() {
-        Product producto1 = new Product("Café Cappuccino", 100, 1200, "");
-        Product producto2 = new Product("Café Latte", 120, 1500, "");
-        Product producto3 = new Product("Mocha Frappuccino", 200, 1800, "");
+        Product producto1 = new Product("Café Cappuccino", 100, 1200, "", "", "");
+        Product producto2 = new Product("Café Latte", 120, 1500, "", "","");
+        Product producto3 = new Product("Mocha Frappuccino", 200, 1800, "", "", "");
         productos.add(producto1);
         productos.add(producto2);
         productos.add(producto3);

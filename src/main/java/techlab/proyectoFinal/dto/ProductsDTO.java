@@ -8,10 +8,8 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductsDTO {
     private String message;
-    private Long id;
-    private String name;
     private Boolean status;
+    private List<Product> products;
 }
-
