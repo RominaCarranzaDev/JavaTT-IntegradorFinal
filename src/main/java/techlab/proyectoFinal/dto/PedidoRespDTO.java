@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class PedidoResDTO {
+public class PedidoRespDTO {
     private Long id;
     private String cliente;
     private Double total;
