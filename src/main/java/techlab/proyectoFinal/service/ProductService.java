@@ -1,6 +1,7 @@
 package techlab.proyectoFinal.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import techlab.proyectoFinal.dto.ProductDTO;
 import techlab.proyectoFinal.dto.ProductsDTO;
@@ -24,124 +25,135 @@ public class ProductService {
 
     public ProductsDTO listProducts() {
         //return this.repository.listProducts();
-        ProductsDTO response = new ProductsDTO();
+        ProductsDTO dto = new ProductsDTO();
 
         List<Product> products = repositoryJpa.findAll();
         if (products.isEmpty()) {
-            response.setStatus(false);
-            response.setMessage("No hay productos.");
-            response.setProducts(Collections.emptyList());
+            dto.setStatus(false);
+            dto.setMessage("No products found.");
+            dto.setProducts(Collections.emptyList());
         } else {
-            response.setStatus(true);
-            response.setMessage("Productos encontrados.");
-            response.setProducts(products);
+            dto.setStatus(true);
+            dto.setMessage("Products found.");
+            dto.setProducts(products);
+            dto.setQuantity(products.size());
         }
-        return response;
+        return dto;
     }
 
     public ProductDTO addProduct(Product product) {
-        ProductDTO responseDTO = new ProductDTO();
+        ProductDTO dto = new ProductDTO();
         try {
             Product savedProduct = this.repositoryJpa.save(product);
-
-            responseDTO.setMessage("Producto creado exitosamente");
-            responseDTO.setId(savedProduct.getId());
-            responseDTO.setName(savedProduct.getName());
-            responseDTO.setStatus(true);
+            dto.setMessage("successfully created product.");
+            dto.setStatus(true);
+            dto.setId(savedProduct.getId());
+            dto.setName(savedProduct.getName());
+            return dto;
         } catch (Exception e) {
-            responseDTO.setMessage("Error al crear el producto: " + e.getMessage());
-            responseDTO.setStatus(false);
+            dto.setMessage("Error creating new product: " + e.getMessage());
+            dto.setStatus(false);
+
         }
-        return responseDTO;
+        return dto;
     }
 
-    public ProductDTO searchById(Long id) {
-        ProductDTO responseDto = new ProductDTO();
-
-        Optional<Product> resultado = repositoryJpa.findById(id);
-
-        if (resultado.isPresent()) {
-            Product producto = resultado.get();
-            responseDto.setId(producto.getId());
-            responseDto.setName(producto.getName());
-            responseDto.setStatus(true);
-            responseDto.setMessage("Producto encontrado!");
-        } else {
-            responseDto.setStatus(false);
-            responseDto.setMessage("No se encontró ningún producto con ID: " + id);
-        }
-
-        return responseDto;
-    }
-
-    public ProductDTO updateProduct(Long id, Product nuevosDatos) {
+    public ProductDTO updateProduct(Long id, Product newData) {
         Optional<Product> optionalProduct = repositoryJpa.findById(id);
-        ProductDTO responseDto = new ProductDTO();
+        ProductDTO dto = new ProductDTO();
 
         if (optionalProduct.isEmpty()) {
-            responseDto.setMessage("No se pudó actualizar producto.");
-            responseDto.setStatus(false);
-            return responseDto;
+            dto.setMessage("Error updating product.");
+            dto.setStatus(false);
+            return dto;
         }
 
         Product existingProduct = optionalProduct.get();
 
-        existingProduct.setName(nuevosDatos.getName());
-        existingProduct.setPrice(nuevosDatos.getPrice());
-        existingProduct.setStock(nuevosDatos.getStock());
-        existingProduct.setDescription(nuevosDatos.getDescription());
-        existingProduct.setCategory(nuevosDatos.getCategory());
-        existingProduct.setImage(nuevosDatos.getImage());
+        existingProduct.setName(newData.getName());
+        existingProduct.setPrice(newData.getPrice());
+        existingProduct.setStock(newData.getStock());
+        existingProduct.setDescription(newData.getDescription());
+        existingProduct.setCategory(newData.getCategory());
+        existingProduct.setImage(newData.getImage());
 
         Product updatedProduct = repositoryJpa.save(existingProduct);
 
-        responseDto.setMessage("Producto actualizado correctamente");
-        responseDto.setId(updatedProduct.getId());
-        responseDto.setName(updatedProduct.getName());
-        responseDto.setStatus(true);
+        dto.setMessage("Product updated successfully.");
+        dto.setId(updatedProduct.getId());
+        dto.setName(updatedProduct.getName());
+        dto.setStatus(true);
 
-        return responseDto;
+        return dto;
     }
 
     public ProductDTO deleteProduct(Long id) {
         Optional<Product> optionalProduct = repositoryJpa.findById(id);
-        ProductDTO responseDto = new ProductDTO();
+        ProductDTO dto = new ProductDTO();
 
         if (optionalProduct.isEmpty()) {
-            responseDto.setMessage("No se pudo eliminar el producto con ID: " + id);
-            responseDto.setStatus(false);
-            return responseDto;
+            dto.setMessage("Error deleting product with ID: " + id);
+            dto.setStatus(false);
+            return dto;
         }
 
         repositoryJpa.deleteById(id);
-        responseDto.setMessage("Producto eliminado correctamente con ID: " + id);
-        responseDto.setStatus(true);
-
-        return responseDto;
+        dto.setMessage("Product with ID: " + id + " successfully removed");
+        dto.setStatus(true);
+        dto.setId(id);
+        return dto;
     }
 
-    public List<ProductDTO> searchByName(String search) {
+    public ProductDTO searchById(Long id) {
+        ProductDTO dto = new ProductDTO();
+        Optional<Product> optionalProduct = repositoryJpa.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            Product producto = optionalProduct.get();
+            dto.setId(producto.getId());
+            dto.setName(producto.getName());
+            dto.setStatus(true);
+            dto.setMessage("Product found.");
+        } else {
+            dto.setStatus(false);
+            dto.setMessage("Product not found with id ID: " + id);
+        }
+        return dto;
+    }
+
+    public ProductsDTO searchByName(String search) {
+        ProductsDTO dto = new ProductsDTO();
         String normalizedSearch = normalizer(search);
 
-        // Trae productos cuyo nombre contenga el texto (case-insensitive)
-        List<Product> foundProducts = repositoryJpa.findByNameContainingIgnoreCase(normalizedSearch);
+        if (search == null || search.trim().isEmpty()) {
+            dto.setStatus(false);
+            dto.setMessage("Search query error.");
+            dto.setProducts(Collections.emptyList());
+            dto.setQuantity(0);
+            return dto;
+        }
 
-        List<ProductDTO> result = new ArrayList<>();
+        List<Product> foundProducts = repositoryJpa.findByNameContainingIgnoreCase(normalizedSearch);
+        List<Product> result = new ArrayList<>();
 
         for (Product producto : foundProducts) {
             String nombreNormalizado = producto.normalizerName();
-
             if (nombreNormalizado.contains(normalizedSearch)) {
-                ProductDTO dto = new ProductDTO();
-                dto.setId(producto.getId());
-                dto.setName(producto.getName());
-                dto.setStatus(true);
-                dto.setMessage("Found ..."); // opcional
-                result.add(dto);
+                result.add(producto);
             }
         }
+        if (result.isEmpty()) {
+            dto.setStatus(false);
+            dto.setMessage("Products not found.");
+        } else {
+            dto.setStatus(true);
+            dto.setMessage("Products found.");
+        }
 
-        return result;
+        dto.setProducts(result);
+        dto.setQuantity(result.size());
+
+        return dto;
     }
 
     public String normalizer(String text) {
@@ -152,111 +164,88 @@ public class ProductService {
         return normalized.replaceAll("\\p{M}", "").toLowerCase();
     }
 
-    public ProductDTO updatePrice(Long id, Double newPrice) {
-        ProductDTO responseDto = new ProductDTO();
+    public ProductsDTO order(String type, String order) {
+        ProductsDTO dto = new ProductsDTO();
+        List<Product> products;
 
-        if (newPrice == null || newPrice <= 0) {
-            responseDto.setMessage("El precio debe ser mayor que cero.");
-            responseDto.setStatus(false);
-            return responseDto;
+        String sortOrder = (order != null && order.equalsIgnoreCase("desc")) ? "desc" : "asc";
+
+        switch (type.toLowerCase()) {
+            case "price":
+                products = sortOrder.equals("asc")
+                        ? repositoryJpa.findAll(Sort.by("price").ascending())
+                        : repositoryJpa.findAll(Sort.by("price").descending());
+                break;
+
+            case "stock":
+                products = sortOrder.equals("asc")
+                        ? repositoryJpa.findAll(Sort.by("stock").ascending())
+                        : repositoryJpa.findAll(Sort.by("stock").descending());
+                break;
+
+            default:
+                dto.setStatus(false);
+                dto.setMessage("Error sorting by type.");
+                dto.setProducts(Collections.emptyList());
+                dto.setQuantity(0);
+                return dto;
         }
 
-        Optional<Product> optionalProduct = repositoryJpa.findById(id);
-        if (optionalProduct.isEmpty()) {
-            responseDto.setMessage("No se pudó actualizar producto.");
-            responseDto.setStatus(false);
-            return responseDto;
-        }
-
-        Product existingProduct = optionalProduct.get();
-        existingProduct.setPrice(newPrice);
-
-        Product updatedProduct = repositoryJpa.save(existingProduct);
-
-        responseDto.setMessage("Precio actualizado correctamente");
-        responseDto.setId(updatedProduct.getId());
-        responseDto.setName(updatedProduct.getName());
-        responseDto.setStatus(true);
-
-        return responseDto;
+        dto.setStatus(true);
+        dto.setMessage("Products sorted by " + type + " (" + sortOrder + ")");
+        dto.setProducts(products);
+        dto.setQuantity(products.size());
+        return dto;
     }
 
-    public ProductDTO updateStock(Long id, Integer newStock) {
+    public ProductDTO editProduct(Long id, Double newPrice, Integer newStock) {
         ProductDTO dto = new ProductDTO();
 
-        // Validación
-        if (newStock == null || newStock < 0) {
-            dto.setMessage("El stock no puede ser negativo.");
-            dto.setStatus(false);
-            return dto;
-        }
-
         Optional<Product> optionalProduct = repositoryJpa.findById(id);
-
         if (optionalProduct.isEmpty()) {
-            dto.setMessage("No se pudo actualizar el stock. Producto no encontrado.");
             dto.setStatus(false);
+            dto.setMessage("Product not found with id ID: " + id);
             return dto;
         }
 
         Product product = optionalProduct.get();
-        product.setStock(newStock);
 
-        repositoryJpa.save(product);
+        boolean actualizado = false;
 
-        dto.setStatus(true);
-        dto.setMessage("Stock actualizado correctamente.");
-        dto.setId(product.getId());
-        dto.setName(product.getName());
+        // Validaciones y actualizaciones
+        if (newPrice != null) {
+            if (newPrice <= 0) {
+                dto.setStatus(false);
+                dto.setMessage("El precio debe ser mayor a cero.");
+                return dto;
+            }
+            product.setPrice(newPrice);
+            actualizado = true;
+        }
 
-        return dto;
-    }
+        if (newStock != null) {
+            if (newStock < 0) {
+                dto.setStatus(false);
+                dto.setMessage("El stock no puede ser negativo.");
+                return dto;
+            }
+            product.setStock(newStock);
+            actualizado = true;
+        }
 
-    public ProductsDTO searchByPrice(String order) {
-        ProductsDTO dto = new ProductsDTO();
-        List<Product> products = repositoryJpa.findAll();
-
-        if (products.isEmpty()) {
+        if (!actualizado) {
             dto.setStatus(false);
-            dto.setMessage("No hay productos.");
-            dto.setProducts(Collections.emptyList());
+            dto.setMessage("Error updating product.");
             return dto;
         }
 
-        if ("desc".equalsIgnoreCase(order)) {
-            products.sort(Comparator.comparing(Product::getPrice).reversed());
-        } else {
-            products.sort(Comparator.comparing(Product::getPrice));
+        Product updated = repositoryJpa.save(product);
 
-            dto.setStatus(true);
-            dto.setMessage("Productos ordenados por precio " + (order != null ? order.toUpperCase() : "ASC") + ".");
-            dto.setProducts(products);
-        }
-        return dto;
-    }
-
-    public ProductsDTO searchByStock(String order) {
-        ProductsDTO dto = new ProductsDTO();
-        List<Product> products = repositoryJpa.findAll();
-
-        if (products.isEmpty()) {
-            dto.setStatus(false);
-            dto.setMessage("No hay productos.");
-            dto.setProducts(Collections.emptyList());
-            return dto;
-        }
-
-        // Ordena según el stock
-        if ("desc".equalsIgnoreCase(order)) {
-            products.sort(Comparator.comparing(Product::getStock).reversed());
-        } else {
-            products.sort(Comparator.comparing(Product::getStock));
-        }
-
+        dto.setId(updated.getId());
+        dto.setName(updated.getName());
         dto.setStatus(true);
-        dto.setMessage("Productos ordenados por stock " + order.toUpperCase() + ".");
-        dto.setProducts(products);
-
+        dto.setMessage("Product updated successfully.");
         return dto;
     }
+
 }

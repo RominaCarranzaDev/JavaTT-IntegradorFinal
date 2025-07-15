@@ -10,8 +10,8 @@ import java.util.List;
 @Setter
 public class ProductDTO {
     private String message;
-    private Long id;
-    private String name;
     private Boolean status;
+    private String name;
+    private Long id;
 }
 

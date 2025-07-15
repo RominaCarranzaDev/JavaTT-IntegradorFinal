@@ -12,4 +12,5 @@ public class ProductsDTO {
     private String message;
     private Boolean status;
     private List<Product> products;
+    private Integer quantity;
 }
