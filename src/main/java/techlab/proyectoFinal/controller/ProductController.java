@@ -70,7 +70,7 @@ public class ProductController {
 
     @PutMapping("/{id}/edit")
     public ResponseEntity<ProductDTO> edit(@PathVariable Long id,@RequestBody ProductUpdateDTO updateDTO) {
-        ProductDTO dto = service.editProduct(updateDTO.getId(), updateDTO.getNewPrice(), updateDTO.getNewStock());
+        ProductDTO dto = service.editProduct(id, updateDTO.getNewPrice(), updateDTO.getNewStock());
         return ResponseEntity.status(dto.getStatus() ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(dto);
     }
 

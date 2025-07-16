@@ -45,7 +45,7 @@ public class ProductService {
         ProductDTO dto = new ProductDTO();
         try {
             Product savedProduct = this.repositoryJpa.save(product);
-            dto.setMessage("successfully created product.");
+            dto.setMessage("Successfully created product.");
             dto.setStatus(true);
             dto.setId(savedProduct.getId());
             dto.setName(savedProduct.getName());

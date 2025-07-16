@@ -9,5 +9,7 @@ import java.util.List;
 @Getter
 public class PedidoReqDTO {
     private String cliente;
-    private List<OrdenRespDTO> ordenes;
+    private List<OrdenReqDTO> ordenes;
+    private String estado;
+    private String formaPago;
 }

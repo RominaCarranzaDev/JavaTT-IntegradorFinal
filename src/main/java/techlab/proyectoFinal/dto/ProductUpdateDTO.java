@@ -8,9 +8,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ProductUpdateDTO {
-    @Min(value = 1, message = "El ID debe ser mayor a 0")
-    private Long id;
-
     @PositiveOrZero(message = "El precio debe ser mayor o igual a 0")
     private Double newPrice;
 

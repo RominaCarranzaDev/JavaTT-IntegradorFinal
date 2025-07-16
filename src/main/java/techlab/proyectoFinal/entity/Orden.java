@@ -29,11 +29,11 @@ public class Orden {
 
     public Orden() {}
 
-    public Orden(Integer cantidad, Pedido pedido, Product producto, Double precioUn) {
+    public Orden(Integer cantidad, Pedido pedido, Product producto) {
         this.cantidad = cantidad;
         this.pedido = pedido;
         this.producto = producto;
-        this.precioUn = precioUn;
+        this.precioUn = producto.getPrice();
     }
 
     @PrePersist
