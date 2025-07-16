@@ -10,9 +10,6 @@ import techlab.proyectoFinal.dto.ProductsDTO;
 import techlab.proyectoFinal.entity.Product;
 import techlab.proyectoFinal.service.ProductService;
 
-import java.util.Collections;
-import java.util.List;
-
 @RestController
 @RequestMapping("/product")
 public class ProductController {

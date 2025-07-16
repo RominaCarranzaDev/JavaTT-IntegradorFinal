@@ -19,7 +19,7 @@ public class PedidoController {
     private final PedidoService pedidoService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<PedidoDetailDTO>> lista() {
+    public ResponseEntity<List<PedidoDetailDTO>> listarPedidos() {
         List<PedidoDetailDTO> lista = pedidoService.listarPedidos();
         if (lista.isEmpty()) {
             return ResponseEntity.noContent().build();
