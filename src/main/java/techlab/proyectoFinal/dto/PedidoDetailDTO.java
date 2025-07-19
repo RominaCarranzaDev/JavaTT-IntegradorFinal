@@ -14,7 +14,7 @@ public class PedidoDetailDTO {
     private LocalDateTime fecha;
     private Double total;
     private List<OrdenDetailDTO> ordenes;
-
+    private Boolean active;
     private Boolean status;
     private String message;
 }

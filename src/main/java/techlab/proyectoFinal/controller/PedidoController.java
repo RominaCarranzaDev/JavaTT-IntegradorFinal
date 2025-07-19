@@ -11,6 +11,7 @@ import techlab.proyectoFinal.service.PedidoService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5500")
 @RestController
 @RequestMapping("/pedidos")
 @RequiredArgsConstructor

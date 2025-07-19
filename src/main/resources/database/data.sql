@@ -1,4 +1,16 @@
 INSERT INTO producto(`name`, price, stock, `description`, `category`, `image`, `name_normalized`)
-VALUES ('Café Cappuccino', 100, 1200, 'desc 1', 'cat1', 'img1', 'cafe cappuccino'),
-       ('Café Latte', 120, 1500, 'desc 2', 'cat2','img2','cafe latte'),
-       ('Mocha Frappuccino', 200, 1800, 'desc 3', 'cat3', 'img3', 'mocha frappuccino');
+VALUES ('Café Cappuccino', 2500, 120, 'desc 1', 'bebida', 'https://i.pinimg.com/736x/fc/23/1c/fc231cf54ee082829916de31a9b233c0.jpg', 'cafe cappuccino'),
+       ('Café Latte', 2120, 150, 'desc 2', 'bebida','https://i.pinimg.com/1200x/cb/8c/cd/cb8ccd25a6933e97109bbce3f447abd3.jpg','cafe latte'),
+       ('Latte Macchiato', 2200, 180, 'desc 3', 'bebida', 'https://i.pinimg.com/1200x/38/43/8a/38438a72f7204d51ebb32c3500b153f1.jpg', 'latte macchiato'),
+       ('Latte Moca', 2250, 120, 'desc', 'bebida', 'https://i.pinimg.com/1200x/d2/1c/d4/d21cd4dac4c920557d0a66dc54217c32.jpg','latte moca'),
+       ('Caramel Macchiato', 2600, 120, 'desc', 'bebida', 'https://i.pinimg.com/1200x/da/1c/f5/da1cf52f55b7b4adcac8dbff75a7a223.jpg', 'caramel macchiato'),
+       ('Café Expreso', 1100, 180, 'des', 'bebida', 'https://i.pinimg.com/736x/67/13/7c/67137ce1f115d6a4d4686e763d33638c.jpg', 'cafe expreso'),
+       ('Rolls', 700, 240, 'bakery', 'bakery', 'https://i.pinimg.com/736x/ed/ed/e6/edede6974dc49bb34800243180cec4f0.jpg', 'rolls'),
+       ('Croissants', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/1200x/b3/f9/8a/b3f98ae0b6710dcc419a8b3e476b4f3d.jpg', 'croissants'),
+       ('Muffin Chocolate', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/736x/56/6a/a0/566aa09f9c3ddb3f298721888902afac.jpg', 'muffin chocolate'),
+       ('Muffin Vanilla', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/736x/aa/58/ea/aa58ea045dad38aa7869eacfb7d3b2cb.jpg', 'muffin vanilla'),
+       ('Muffin Red Velvet Frutilla', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/736x/1d/65/2b/1d652b4a7f7329b9943c7e626a836dbc.jpg', 'muffin red velvet frutilla'),
+       ('Creamy Chocolate Mousse Cake', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/736x/a8/3f/a5/a83fa5f249ca1a40afc3948a42adf933.jpg', 'creamy chocolate mousse cake'),
+       ('Cheesecake Mora', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/1200x/8b/64/75/8b64757c44ee8073a8e31289bf925e8c.jpg', 'cheesecake mora'),
+       ('Cheesecake Frutilla', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/736x/fb/16/9e/fb169eb149eb43312a7574e5882fca86.jpg', 'cheesecake frutilla'),
+       ('Lemon Pie', 800, 220, 'bakery', 'bakery', 'https://i.pinimg.com/1200x/40/06/41/4006415e2e232d8a7b0c860887c3d3e2.jpg', 'lemon pie');

@@ -10,6 +10,7 @@ import techlab.proyectoFinal.dto.ProductsDTO;
 import techlab.proyectoFinal.entity.Product;
 import techlab.proyectoFinal.service.ProductService;
 
+@CrossOrigin(origins = "http://localhost:5500")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
